@@ -22,9 +22,11 @@ describe('/api/categories', () => {
             res.body.forEach((category) => {
                 expect(typeof category === 'object');
             })
-            expect(res.body[0]).toEqual({
-                slug: expect.any(String),
-                description: expect.any(String)
+            res.body.forEach((category) => {
+                expect(category).toEqual({
+                    slug: expect.any(String),
+                    description: expect.any(String)
+                })
             })
         });
     });
