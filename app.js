@@ -1,10 +1,7 @@
 const express = require('express');
 const app = express();
 
-const { getCategoryObjects, getReviewById } = require('./controllers/categories-controller.js');
-
-const { getCategoryObjects, getReviewObjects } = require('./controllers/categories-controller.js');
-
+const { getCategoryObjects, getReviewById, getReviewObjects } = require('./controllers/categories-controller.js');
 
 app.use(express.json());
 

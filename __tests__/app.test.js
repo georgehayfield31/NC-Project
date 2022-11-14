@@ -70,6 +70,9 @@ describe('/api/reviews/:review_id', () => {
                 created_at: expect.any(String),
                 votes: expect.any(Number)
             })
+        })
+    })
+});
 
 describe('/api/reviews', () => {
     test('GET respond with an array of review objects.', () => {
