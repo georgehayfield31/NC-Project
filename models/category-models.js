@@ -8,7 +8,7 @@ exports.fetchCategoryObjects = () => {
 
 exports.fetchReviewObjects = () => {
     return db.query(`SELECT reviews.review_id, reviews.title, reviews.category, 
-                    reviews.designer, reviews.owner, reviews.review_body, reviews.review_img_url, 
+                    reviews.designer, reviews.owner, reviews.review_img_url, 
                     reviews.created_at, reviews.votes, 
                     COUNT(comments.comment_id)::Int AS comment_count 
                     FROM reviews
