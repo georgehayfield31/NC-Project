@@ -31,3 +31,31 @@ describe('/api/categories', () => {
         });
     });
 });
+
+describe('/api/reviews', () => {
+    test('GET respond with an array of review objects.', () => {
+        return request(app)
+        .get('/api/reviews')
+        .expect(200)
+        .then((res) => {
+            expect(res.body).toEqual(expect.any(Array))
+            res.body.forEach((review) => {
+                expect(typeof review === 'object');
+            })
+            res.body.forEach((review) => {
+                expect(review).toEqual({
+                    review_id: expect.any(Number),
+                    title: expect.any(String),
+                    category: expect.any(String),
+                    designer: expect.any(String),
+                    owner: expect.any(String),
+                    review_body: expect.any(String),
+                    review_img_url: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    comment_count: expect.any(Number)
+                })
+            })
+        });
+    });
+});
