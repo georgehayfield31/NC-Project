@@ -1,4 +1,4 @@
-const { fetchCategoryObjects, fetchReviewById, fetchReviewObjects, fetchCommentsByReviewId } = require('../models/category-models')
+const { fetchCategoryObjects, fetchReviewById, fetchReviewObjects, fetchCommentsByReviewId, createCommentByReviewId } = require('../models/category-models')
 
 exports.getCategoryObjects = (req, res, next) => {
     fetchCategoryObjects().then((categories) => {
@@ -34,4 +34,22 @@ exports.getCommentsByReviewId = (req, res, next) => {
     .catch((err) => {
         next(err)
     })
+}
+
+exports.postCommentByReviewId = (req, res, next) => {
+    const { review_id } = req.params;
+    const body = req.body.body;
+    const username = req.body.author;
+    const date = new Date(Date.now());
+    fetchReviewById(review_id)
+    .then(() => {
+        return createCommentByReviewId(review_id, body, username, date)
+    })
+    .then((comment) => {
+        res.status(201).send(comment)
+    })
+    .catch((err) => {
+        next(err)
+    })
+    
 }

@@ -103,7 +103,7 @@ describe('/api/reviews', () => {
     });
 });
 
-describe('/api/reviews.review_id/comments', () => {
+describe('/api/reviews/review_id/comments', () => {
     test('GET - 404: Review ID not in bounds', () => {
         return request(app)
         .get('/api/reviews/100')
@@ -129,6 +129,77 @@ describe('/api/reviews.review_id/comments', () => {
                 })
             })
             expect(res.body).toBeSortedBy("created_at", { descending: true });
+
+        });
+    });
+});
+
+describe('/api/reviews/review_id/comments', () => {
+    test('POST - 400: Review ID not an int', () => {
+        const newComment = {
+            author: 'mallionaire',
+            body: 'Hello There'
+        }
+        return request(app)
+        .post('/api/reviews/bad_id/comments')
+        .send(newComment)
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request!')
+        })
+    });
+    test('POST - 400: Comment not complete', () => {
+        const newComment = {
+            author: 'mallionaire'
+        }
+        return request(app)
+        .post('/api/reviews/1/comments')
+        .send(newComment)
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Incomplete Object!')
+        })
+    });
+    test('POST - 400: Comment not complete', () => {
+        const newComment = {
+            body: 'Hello'
+        }
+        return request(app)
+        .post('/api/reviews/1/comments')
+        .send(newComment)
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Incomplete Object!')
+        })
+    });
+    test('POST - 404: Review ID not in bounds', () => {
+        return request(app)
+        .post('/api/reviews/100/comments')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Review not found!')
+        })
+    });
+    test('POST - 201: respond with the new created comment.', () => {
+        const newComment = {
+            author: 'mallionaire',
+            body: 'Hello There'
+        }
+        return request(app)
+        .post('/api/reviews/1/comments')
+        .expect(201)
+        .send(newComment)
+        .then((res) => {
+            expect(res.body).toEqual(expect.any(Object))
+            expect(res.body).toEqual({
+                comment_id: expect.any(Number),
+                votes: expect.any(Number),
+                created_at: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+                review_id: expect.any(Number)
+            })
+            
 
         });
     });
