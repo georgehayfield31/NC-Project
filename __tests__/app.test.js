@@ -102,3 +102,34 @@ describe('/api/reviews', () => {
         });
     });
 });
+
+describe('/api/reviews.review_id/comments', () => {
+    test('GET - 404: Review ID not in bounds', () => {
+        return request(app)
+        .get('/api/reviews/100')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Review not found!')
+        })
+    });
+    test('GET respond with an array of comments for a given review id.', () => {
+        return request(app)
+        .get('/api/reviews/1/comments')
+        .expect(200)
+        .then((res) => {
+            expect(res.body).toEqual(expect.any(Array))
+            res.body.forEach((comment) => {
+                expect(comment).toEqual({
+                    comment_id: expect.any(Number),
+                    votes: expect.any(Number),
+                    created_at: expect.any(String),
+                    author: expect.any(String),
+                    body: expect.any(String),
+                    review_id: expect.any(String)
+                })
+            })
+            expect(res.body).toBeSortedBy("created_at", { descending: true });
+
+        });
+    });
+});
