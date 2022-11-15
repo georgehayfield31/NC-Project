@@ -30,3 +30,9 @@ exports.fetchReviewObjects = () => {
     })
 };
 
+exports.fetchCommentsByReviewId = (review_id) => {
+    return db.query(`SELECT * FROM comments WHERE review_id = $1 ORDER BY created_at DESC;`, [review_id]).then((comments) => {
+        return comments.rows;
+    })
+};
+
