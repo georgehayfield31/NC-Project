@@ -274,3 +274,24 @@ describe('/api/reviews/review_id/comments', () => {
         });
     });
 });
+
+describe('/api/users', () => {
+    test('GET - 200: Return array of user objects', () => {
+        return request(app)
+        .get('/api/users')
+        .then((res) => {
+            expect(res.body).toEqual(expect.any(Array))
+            res.body.forEach((review) => {
+                expect(typeof review === 'object');
+            })
+            expect(res.body.length > 0).toBe(true)
+            res.body.forEach((user) => {
+                expect(user).toEqual({
+                    username: expect.any(String),
+                    name: expect.any(String),
+                    avatar_url: expect.any(String)
+                })
+            })
+        })
+    });
+});
