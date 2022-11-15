@@ -259,8 +259,8 @@ describe('/api/reviews/review_id/comments', () => {
                 comment_id: expect.any(Number),
                 votes: expect.any(Number),
                 created_at: expect.any(String),
-                author: expect.any(String),
-                body: expect.any(String),
+                author: 'mallionaire',
+                body: 'Hello There',
                 review_id: expect.any(Number)
             })
         });
