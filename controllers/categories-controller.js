@@ -1,4 +1,4 @@
-const { fetchCategoryObjects, fetchReviewById, fetchReviewObjects, fetchCommentsByReviewId, createCommentByReviewId } = require('../models/category-models')
+const { fetchCategoryObjects, fetchReviewById, fetchReviewObjects, fetchCommentsByReviewId, createCommentByReviewId, updateReviewByReviewId } = require('../models/category-models')
 
 exports.getCategoryObjects = (req, res, next) => {
     fetchCategoryObjects().then((categories) => {
@@ -50,6 +50,20 @@ exports.postCommentByReviewId = (req, res, next) => {
     })
     .catch((err) => {
         next(err)
+    })  
+}
+
+exports.patchReviewByReviewId = (req, res, next) => {
+    const { review_id } = req.params;
+    const newVote = req.body.inc_votes;
+    fetchReviewById(review_id)
+    .then(() => {
+        return  updateReviewByReviewId(review_id, newVote)
     })
-    
+    .then((review) => {
+        res.status(200).send(review)
+    })
+    .catch((err) => {
+        next(err)
+    })
 }

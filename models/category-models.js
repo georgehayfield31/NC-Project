@@ -45,3 +45,10 @@ exports.createCommentByReviewId = (review_id, body, username, date) => {
                      })
 }
 
+exports.updateReviewByReviewId = (review_id, newVote) => {
+    return db.query(`UPDATE reviews SET votes = votes + $1 WHERE review_id=$2 RETURNING *`, [newVote, review_id])
+    .then((review) => {
+        return review.rows[0];
+    })
+}
+
