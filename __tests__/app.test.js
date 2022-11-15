@@ -72,6 +72,70 @@ describe('/api/reviews/:review_id', () => {
             })
         })
     })
+
+    test('PATCH - 404: Review ID not in bounds', () => {
+        const newVote = {
+            inc_votes: 5
+        }
+        return request(app)
+        .patch('/api/reviews/100')
+        .send(newVote)
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Review not found!')
+        })
+    });
+
+    test('PATCH - 400: Bad request', () => {
+        const newVote = {
+            inc_votes: 5
+        }
+        return request(app)
+        .patch('/api/reviews/bad_request')
+        .send(newVote)
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request!')
+        })
+    });
+
+    test('PATCH - 400: Incomplete Key', () => {
+        const newVote = {
+            inc: 5
+        }
+        return request(app)
+        .patch('/api/reviews/1')
+        .send(newVote)
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Incomplete Object!')
+        })
+    });
+
+    test('PATCH - 200: Update votes and return the updated review', () => {
+        const newVote = {
+            inc_votes: 5
+        }
+        return request(app)
+        .patch('/api/reviews/1')
+        .send(newVote)
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toEqual(expect.any(Object))
+            expect(body).toEqual({
+                review_id: expect.any(Number),
+                title: expect.any(String),
+                designer: expect.any(String),
+                owner: expect.any(String),
+                review_img_url: expect.any(String),
+                review_body: expect.any(String),
+                category: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number)
+            })
+            expect(body.votes).toBe(6)
+        })
+    });
 });
 
 describe('/api/reviews', () => {
@@ -106,10 +170,18 @@ describe('/api/reviews', () => {
 describe('/api/reviews/review_id/comments', () => {
     test('GET - 404: Review ID not in bounds', () => {
         return request(app)
-        .get('/api/reviews/100')
+        .get('/api/reviews/100/comments')
         .expect(404)
         .then(({ body }) => {
             expect(body.msg).toBe('Review not found!')
+        })
+    });
+    test('GET - 400: Bad review Id', () => {
+        return request(app)
+        .get('/api/reviews/bad_request/comments')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request!')
         })
     });
     test('GET respond with an array of comments for a given review id.', () => {
@@ -195,12 +267,10 @@ describe('/api/reviews/review_id/comments', () => {
                 comment_id: expect.any(Number),
                 votes: expect.any(Number),
                 created_at: expect.any(String),
-                author: expect.any(String),
-                body: expect.any(String),
+                author: 'mallionaire',
+                body: 'Hello There',
                 review_id: expect.any(Number)
             })
-            
-
         });
     });
 });

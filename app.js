@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const { getCategoryObjects, getReviewById, getReviewObjects, getCommentsByReviewId, postCommentByReviewId } = require('./controllers/categories-controller.js');
+const { getCategoryObjects, getReviewById, getReviewObjects, getCommentsByReviewId, postCommentByReviewId, patchReviewByReviewId } = require('./controllers/categories-controller.js');
 
 app.use(express.json());
 
@@ -13,6 +13,9 @@ app.get('/api/reviews/:review_id/comments', getCommentsByReviewId);
 
 //POST
 app.post('/api/reviews/:review_id/comments', postCommentByReviewId);
+
+//PATCH
+app.patch('/api/reviews/:review_id', patchReviewByReviewId);
 
 //Error Handling
 app.use((err, req, res, next) => {
