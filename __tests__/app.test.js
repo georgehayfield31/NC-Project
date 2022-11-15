@@ -170,10 +170,18 @@ describe('/api/reviews', () => {
 describe('/api/reviews/review_id/comments', () => {
     test('GET - 404: Review ID not in bounds', () => {
         return request(app)
-        .get('/api/reviews/100')
+        .get('/api/reviews/100/comments')
         .expect(404)
         .then(({ body }) => {
             expect(body.msg).toBe('Review not found!')
+        })
+    });
+    test('GET - 400: Bad review Id', () => {
+        return request(app)
+        .get('/api/reviews/bad_request/comments')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request!')
         })
     });
     test('GET respond with an array of comments for a given review id.', () => {
