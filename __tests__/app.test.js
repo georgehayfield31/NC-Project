@@ -55,12 +55,12 @@ describe('/api/reviews/:review_id', () => {
 
     test('GET respond with a specific review object.', () => {
         return request(app)
-        .get('/api/reviews/1')
+        .get('/api/reviews/2')
         .expect(200)
         .then((res) => {
             expect(res.body).toEqual(expect.any(Object))
             expect(res.body).toEqual({
-                review_id: 1,
+                review_id: 2,
                 title: expect.any(String),
                 designer: expect.any(String),
                 owner: expect.any(String),
@@ -68,7 +68,8 @@ describe('/api/reviews/:review_id', () => {
                 review_body: expect.any(String),
                 category: expect.any(String),
                 created_at: expect.any(String),
-                votes: expect.any(Number)
+                votes: expect.any(Number),
+                comment_count: 3
             })
         })
     })
