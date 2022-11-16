@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const { getCategoryObjects, getReviewById, getReviewObjects, getCommentsByReviewId, postCommentByReviewId, patchReviewByReviewId, getUsers } = require('./controllers/categories-controller.js');
+const { getCategoryObjects, getReviewById, getReviewObjects, getCommentsByReviewId, postCommentByReviewId, patchReviewByReviewId, getUsers, deleteCommentByCommentId } = require('./controllers/categories-controller.js');
 
 app.use(express.json());
 
@@ -17,6 +17,9 @@ app.post('/api/reviews/:review_id/comments', postCommentByReviewId);
 
 //PATCH
 app.patch('/api/reviews/:review_id', patchReviewByReviewId);
+
+//DELETE
+app.delete('/api/comments/:comment_id', deleteCommentByCommentId);
 
 //Error Handling
 app.use((err, req, res, next) => {
