@@ -139,7 +139,7 @@ describe('/api/reviews/:review_id', () => {
     });
 });
 
-describe.only('/api/reviews', () => {
+describe('/api/reviews', () => {
     test('GET - 200: respond with an array of review objects when no query params given.', () => {
         return request(app)
         .get('/api/reviews')
