@@ -15,10 +15,14 @@ exports.getReviewById = (req, res, next) => {
         next(err)
     })
 }
+//this
 exports.getReviewObjects = (req, res, next) => {
-    fetchReviewObjects().then((reviews) => {
+    const { sort_by, order, category } = req.query;
+    fetchReviewObjects(sort_by, order, category).then((reviews) => {
         res.status(200).send(reviews);
-
+    })
+    .catch((err) => {
+        next(err);
     });
 }
 

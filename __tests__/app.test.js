@@ -139,8 +139,8 @@ describe('/api/reviews/:review_id', () => {
     });
 });
 
-describe('/api/reviews', () => {
-    test('GET respond with an array of review objects.', () => {
+describe.only('/api/reviews', () => {
+    test('GET - 200: respond with an array of review objects when no query params given.', () => {
         return request(app)
         .get('/api/reviews')
         .expect(200)
@@ -165,6 +165,114 @@ describe('/api/reviews', () => {
             expect(res.body).toBeSortedBy("created_at", { descending: true });
 
         });
+    });
+
+    test('GET - 200: respond with an array of review objects sorted in ASC order.', () => {
+        return request(app)
+        .get('/api/reviews?order=ASC')
+        .expect(200)
+        .then((res) => {
+            expect(res.body).toEqual(expect.any(Array))
+            res.body.forEach((review) => {
+                expect(typeof review === 'object');
+            })
+            res.body.forEach((review) => {
+                expect(review).toEqual({
+                    review_id: expect.any(Number),
+                    title: expect.any(String),
+                    category: expect.any(String),
+                    designer: expect.any(String),
+                    owner: expect.any(String),
+                    review_img_url: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    comment_count: expect.any(Number)
+                })
+            })
+            expect(res.body).toBeSortedBy("created_at", { descending: false });
+
+        });
+    });
+
+    test('GET - 200: respond with an array of review objects sorted in ASC order of votes.', () => {
+        return request(app)
+        .get('/api/reviews?sort_by=votes&order=ASC')
+        .expect(200)
+        .then((res) => {
+            expect(res.body).toEqual(expect.any(Array))
+            res.body.forEach((review) => {
+                expect(typeof review === 'object');
+            })
+            res.body.forEach((review) => {
+                expect(review).toEqual({
+                    review_id: expect.any(Number),
+                    title: expect.any(String),
+                    category: expect.any(String),
+                    designer: expect.any(String),
+                    owner: expect.any(String),
+                    review_img_url: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    comment_count: expect.any(Number)
+                })
+            })
+            expect(res.body).toBeSortedBy("votes", { descending: false });
+
+        });
+    });
+
+    test('GET - 200: respond with an array of review objects sorted in ASC order of votes with a specific category.', () => {
+        return request(app)
+        .get('/api/reviews?sort_by=votes&order=ASC&category=social deduction')
+        .expect(200)
+        .then((res) => {
+            expect(res.body).toEqual(expect.any(Array))
+            res.body.forEach((review) => {
+                expect(typeof review === 'object');
+            })
+            res.body.forEach((review) => {
+                expect(review).toEqual({
+                    review_id: expect.any(Number),
+                    title: expect.any(String),
+                    category: 'social deduction',
+                    designer: expect.any(String),
+                    owner: expect.any(String),
+                    review_img_url: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    comment_count: expect.any(Number)
+                })
+            })
+            expect(res.body).toBeSortedBy("votes", { descending: false });
+
+        });
+    });
+
+    test('GET - 400: Bad sort_by value.', () => {
+        return request(app)
+        .get('/api/reviews?sort_by=bad_value')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Invalid query!')
+        })
+    });
+
+    test('GET - 400: Bad order value.', () => {
+        return request(app)
+        .get('/api/reviews?order=bad_value')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Invalid query!')
+        })
+    });
+
+    test('GET - 400: Bad sort_by value but acceptable order value.', () => {
+        return request(app)
+        .get('/api/reviews?sort_by=bad_value&order=ASC')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Invalid query!')
+        })
     });
 });
 
