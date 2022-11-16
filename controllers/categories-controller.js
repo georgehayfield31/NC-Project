@@ -1,4 +1,4 @@
-const { fetchCategoryObjects, fetchReviewById, fetchReviewObjects, fetchCommentsByReviewId, createCommentByReviewId, updateReviewByReviewId } = require('../models/category-models')
+const { fetchCategoryObjects, fetchReviewById, fetchReviewObjects, fetchCommentsByReviewId, createCommentByReviewId, updateReviewByReviewId, fetchUsers } = require('../models/category-models')
 
 exports.getCategoryObjects = (req, res, next) => {
     fetchCategoryObjects().then((categories) => {
@@ -65,5 +65,11 @@ exports.patchReviewByReviewId = (req, res, next) => {
     })
     .catch((err) => {
         next(err)
+    })
+}
+
+exports.getUsers = (req, res, next) => {
+    fetchUsers().then((users) => {
+        res.status(200).send(users);
     })
 }
