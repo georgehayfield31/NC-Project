@@ -405,7 +405,7 @@ describe('/api/users', () => {
     });
 });
 
-describe.only('/api/comments/:comment_id', () => {
+describe('/api/comments/:comment_id', () => {
     test('DELETE - 204: Remove a comment based off comment id', () => {
         return request(app)
         .delete('/api/comments/1')
