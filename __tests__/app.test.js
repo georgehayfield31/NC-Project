@@ -434,7 +434,7 @@ describe('/api/comments/:comment_id', () => {
     });
 });
 
-describe.only('/api', () => {
+describe('/api', () => {
     test('GET - 200: Should return all endpoints in a JSON object.', () => {
         return request(app)
         .get('/api')
