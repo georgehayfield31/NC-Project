@@ -1,57 +1,88 @@
-# Northcoders House of Games API
 
-## Background
+### ABOUT
 
-We will be building an API for the purpose of accessing application data programmatically. The intention here is to mimic the building of a real world backend service (such as reddit) which should provide this information to the front end architecture.
+This projec is designed to act as a point of use for future front-end projects.
 
-Your database will be PSQL, and you will interact with it using [node-postgres](https://node-postgres.com/).
+Users are able to create, view, update and delete reviews for games as well as creating comments for specific reviews.
+In addition, votes are also able to be added to reviews to give an indication to the quality of a game.
 
-## Kanban
+### HOSTED LINK
 
-### Link to your Trello Board here: https://trello.com/b/gBtX4GN3/be-nc-games
+A link to the hosted database and endpoints can be found at:
 
-To keep track of the tasks involved in this project we're going to use a kanban board. Ensure that you work on one _ticket_ at time. You can click on the ticket to find out more information about what is required for the feature. A ticket is not considered complete unless both the happy path and errors response are handled. You can make use of the checklist on each ticket to keep track of the errors you want to handle. You can also make use of [error-handling.md](error-handling.md) to consider the error codes we may wish to respond with.
+https://good-ruby-viper-coat.cyclic.app/
 
-**Please ensure you work through the tickets in numerical order.**
+To view the available APIs make a request to '/api'.
 
-## Git Branching and Pull Requests
+### ✔️ 1. CLONE THE REPO
 
-You will be working on each ticket on a new **branch**.
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 
-To create and switch to a new git branch use the command:
-
+Command:
 ```
-git checkout -b <new branch name>
-```
-
-This will create a branch and move over to that branch. (Omit the `-b` flag if you wish to switch to an already existing branch).
-
-We recommend that you name the branch after the number assigned to each ticket via the header. eg. `ncnews-1`
-
-When pushing the branch to git hub ensure that you make reference to the branch you are pushing to on the remote.
-
-```
-git push origin <branch name>
+$ git clone https://github.com//georgehayfield31/NC-Project.git
 ```
 
-From github you can make a pull request and share the link and ticket number via a pull request specific nchelp using the command `nchelp pr`. A tutor will swing by to review your code. Ensure that you keep your trello up to date whilst you await the PR approval. Regular `nchelp` will be available for when you need support.
-
-Once a pull request been accepted be sure to switch back to the main branch and pull down the updated changes.
-
+### ✔️ 2. INSTALL DEPENDENCIES
+![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
+```programming
+$ npm install
 ```
-git checkout main
-
-git pull origin main
-```
-
-You can tidy up your local branches once they have been pull into main by deleting them:
-
-```
-git branch -D <local branch>
+For issues encountered during installation
+```programming
+$ npm audit fix
 ```
 
-## Husky
+### ✔️ 3. DOTENV
 
-To ensure we are not commiting broken code this project makes use of git hooks. Git hooks are scripts triggered during certain events in the git lifecycle. Husky is a popular package which allows us to set up and maintain these scripts. This project makes use a _pre-commit hook_. When we attempt to commit our work, the script defined in the `pre-commit` file will run. If any of our tests fail than the commit will be aborted.
+To run the project locally create the following files in the root directory:
+```programming
+.env.development
+.env.test
+```
 
-The [Husky documentation](https://typicode.github.io/husky/#/) explains how to configure Husky for your own project as well as creating your own custom hooks.\_
+The contents of these files should be as follows:
+
+``` .env.development: ```
+```
+PGDATABASE=nc_games
+```
+
+``` .env.test: ```
+```
+PGDATABASE=nc_games_test
+```
+
+### ✔️ 4. SEED THE LOCAL DATABASE
+![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
+
+To seed the database prior to running the following commands should be run:
+```
+$ npm run setup-dbs
+$ npm run seed
+```
+
+### ✔️ 5. RUN TESTS
+![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white) ![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white) 
+
+To run the comprehensive test suite run the command:
+```
+$ npm test
+```
+
+### ✔️ 6. USAGE
+![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
+
+To start the server, run the command:
+```
+$ npm start
+```
+
+## Node.js and Postgres
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+
+This project was created using:
+```
+$ node -v | v16.13.0
+$ psql -V | 14.5
+```
