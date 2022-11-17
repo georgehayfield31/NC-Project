@@ -24,17 +24,53 @@ exports.fetchReviewById = (review_id) => {
     })
 };
 
-exports.fetchReviewObjects = () => {
-    return db.query(`SELECT reviews.review_id, reviews.title, reviews.category, 
-                    reviews.designer, reviews.owner, reviews.review_img_url, 
-                    reviews.created_at, reviews.votes, 
-                    COUNT(comments.comment_id)::Int AS comment_count 
-                    FROM reviews
-                    LEFT JOIN comments ON 
-                    reviews.review_id = comments.review_id
-                    GROUP BY reviews.review_id
-                    ORDER BY reviews.created_at DESC;`).then((review) => {
-        return review.rows;
+exports.fetchReviewObjects = (sort_by = 'created_at', order = 'DESC', category) => {
+    const validReviewSort = ['review_id', 'title', 'category', 'designer', 'owner', 'review_img_url', 'created_at', 'votes', 'body']
+    const validReviewOrder = ['ASC','DESC']
+
+    if (!validReviewSort.includes(sort_by)){
+        return Promise.reject({status: 400, msg: 'Invalid query!'})
+    } else if (!validReviewOrder.includes(order)) {
+         return Promise.reject({status: 400, msg: 'Invalid query!'})
+    }
+
+    if (sort_by === "review_id") {
+        sort_by = "reviews.review_id";
+      }
+      if (sort_by === "created_at") {
+        sort_by = "reviews.created_at";
+      }
+      if (sort_by === "votes") {
+        sort_by = "reviews.votes";
+      }
+      if (sort_by === "title") {
+        sort_by = "title::bytea";
+      }
+      if (sort_by === "designer") {
+        sort_by = "designer::bytea";
+      }
+      if (sort_by === "review_body") {
+        sort_by = "title::bytea";
+      }
+
+    let query = `
+                SELECT reviews.review_id, reviews.title, reviews.category, 
+                reviews.designer, reviews.owner, reviews.review_img_url, 
+                reviews.created_at, reviews.votes, 
+                COUNT(comments.comment_id)::Int AS comment_count 
+                FROM reviews
+                LEFT JOIN comments ON 
+                reviews.review_id = comments.review_id` 
+    const queryValues = []
+
+    if(category){
+        query += ' WHERE reviews.category = $1';
+        queryValues.push(category)
+    }
+    query += ` GROUP BY reviews.review_id ORDER BY ${sort_by} ${order};`
+ 
+    return db.query(query, queryValues).then((reviews) => {
+        return reviews.rows;
     })
 };
 
