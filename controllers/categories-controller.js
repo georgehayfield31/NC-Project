@@ -1,4 +1,5 @@
 const { fetchCategoryObjects, fetchReviewById, fetchReviewObjects, fetchCommentsByReviewId, createCommentByReviewId, updateReviewByReviewId, fetchUsers, removeCommentById } = require('../models/category-models')
+const endpoints = require('../endpoints.js');
 
 exports.getCategoryObjects = (req, res, next) => {
     fetchCategoryObjects().then((categories) => {
@@ -87,3 +88,7 @@ exports.deleteCommentByCommentId = (req, res, next) => {
         next(err)
     })
 }
+
+exports.getJSONEndpoints = (req, res, next) => {
+    res.status(200).send({ endpoints });
+  };

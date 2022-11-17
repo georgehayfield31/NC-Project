@@ -433,3 +433,15 @@ describe('/api/comments/:comment_id', () => {
         })
     });
 });
+
+describe.only('/api', () => {
+    test('GET - 200: Should return all endpoints in a JSON object.', () => {
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then((res) => {
+            expect(res.body).toEqual(expect.any(Object))
+            expect(Object.keys(res.body.endpoints).length).toBe(9)
+        })
+    });
+});
