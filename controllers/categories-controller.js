@@ -1,4 +1,4 @@
-const { fetchCategoryObjects, fetchReviewById, fetchReviewObjects, fetchCommentsByReviewId, createCommentByReviewId, updateReviewByReviewId, fetchUsers } = require('../models/category-models')
+const { fetchCategoryObjects, fetchReviewById, fetchReviewObjects, fetchCommentsByReviewId, createCommentByReviewId, updateReviewByReviewId, fetchUsers, removeCommentById } = require('../models/category-models')
 
 exports.getCategoryObjects = (req, res, next) => {
     fetchCategoryObjects().then((categories) => {
@@ -15,7 +15,7 @@ exports.getReviewById = (req, res, next) => {
         next(err)
     })
 }
-//this
+
 exports.getReviewObjects = (req, res, next) => {
     const { sort_by, order, category } = req.query;
     fetchReviewObjects(sort_by, order, category).then((reviews) => {
@@ -75,5 +75,15 @@ exports.patchReviewByReviewId = (req, res, next) => {
 exports.getUsers = (req, res, next) => {
     fetchUsers().then((users) => {
         res.status(200).send(users);
+    })
+}
+
+exports.deleteCommentByCommentId = (req, res, next) => {
+    const { comment_id } = req.params;
+    removeCommentById(comment_id).then(() => {
+        res.status(204).send();
+    })
+    .catch((err) => {
+        next(err)
     })
 }

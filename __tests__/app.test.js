@@ -404,3 +404,32 @@ describe('/api/users', () => {
         })
     });
 });
+
+describe('/api/comments/:comment_id', () => {
+    test('DELETE - 204: Remove a comment based off comment id', () => {
+        return request(app)
+        .delete('/api/comments/1')
+        .then(({ body }) => {
+            expect(body).toEqual({})
+            expect(204)
+        })
+    });
+
+    test('DELETE - 404: Comment ID not in bounds', () => {
+        return request(app)
+        .delete('/api/comments/100')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Comment not found!')
+        })
+    });
+
+    test('DELETE - 400: Bad request', () => {
+        return request(app)
+        .delete('/api/comments/bad_request')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request!')
+        })
+    });
+});
